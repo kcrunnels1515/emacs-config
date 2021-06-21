@@ -1,0 +1,15 @@
+;;;; Emacs Bookmark Format Version 1 ;;;; -*- coding: utf-8-emacs -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("refs.bib"
+ (filename . "~/dox/refs.bib")
+ (front-context-string . "@book{wilkinsonm")
+ (rear-context-string)
+ (position . 1))
+("config.org"
+ (filename . "~/.emacs.d/config.org")
+ (front-context-string . "7)\n             ")
+ (rear-context-string . "   (bookmarks . ")
+ (position . 3368))
+)

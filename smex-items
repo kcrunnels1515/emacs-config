@@ -1,0 +1,33 @@
+
+;; ----- smex-history -----
+(
+ set-input-method
+ toggle-input-method
+ dashboard-mode
+ dashboard-return
+ counsel-git-checkout
+ shell-command
+ eww
+)
+
+;; ----- smex-data -----
+(
+ (eww . 1)
+ (gnus . 1)
+ (eval-buffer . 1)
+ (bookmark-menu . 1)
+ (bookmark-set . 1)
+ (dashboard-return . 3)
+ (calc . 1)
+ (eaf-open-demo . 1)
+ (eaf-open-camera . 1)
+ (eaf-open-browser . 1)
+ (shell-command . 1)
+ (counsel-git-checkout . 1)
+ (epcs:kill-all-processes . 1)
+ (epc:controller . 1)
+ (epc:pop-to-last-server-process-buffer . 1)
+ (dashboard-mode . 1)
+ (toggle-input-method . 1)
+ (set-input-method . 2)
+)
