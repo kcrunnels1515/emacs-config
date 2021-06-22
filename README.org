@@ -1,0 +1,8 @@
+#+TITLE: README
+#+AUTHOR: Kelly Runnels
+
+* My Emacs Power-Config.
+To install, clone this repo to your ~/.emacs.d directory.
+
+
+[[./evim.png]]
