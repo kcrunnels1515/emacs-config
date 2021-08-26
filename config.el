@@ -1,5 +1,7 @@
 (setq eaf-enable 1)
 
+(setq make-backup-files nil)
+
 (setq visible-bell nil)
 (defun ring-bell-function ()
     (message "%s" (propertize "Ding!" 'face '(:foreground "red")))
@@ -24,6 +26,8 @@
 (global-set-key (kbd "C-x a q") 'evil-delete-buffer)
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c C-l") 'org-insert-link)
+(global-set-key (kbd "C-x a a") 'append-to-buffer)
+
 
 (defun run-compiler-on-line ()
   (interactive)
@@ -55,6 +59,12 @@
 "f q" 'delete-frame
 "f n" 'make-frame
 "e l" 'other-buff-to-split
+"m s" 'emms-start
+"m e" 'emms-stop
+"m n" 'emms-next
+"m b" 'emms-previous
+"m ?" 'emms-shuffle
+"m p" 'emms-pause
 )
 (nvmap :prefix "Z"
 "X" 'evil-write
@@ -148,12 +158,12 @@
     vterm-max-scrollback 5000)
 
 (add-hook 'org-mode-hook 'org-indent-mode)
-(setq org-directory "~/org/"
-      org-agenda-files '("~/org/agenda.org")
+(setq org-directory "~/dox/org/"
+      org-agenda-files '("~/dox/org/agenda.org")
       org-default-notes-file (expand-file-name "notes.org" org-directory)
       org-ellipsis " ▼ "
       org-log-done 'time
-      org-journal-dir "~/org/journal/"
+      org-journal-dir "~/dox/org/journal/"
       org-journal-date-format "%B %d, %Y (%A) "
       org-journal-file-format "%Y-%m-%d.org"
       org-hide-emphasis-markers t)
@@ -186,4 +196,32 @@ org-edit-src-content-indentation 0)
 (use-package mw-thesaurus)
 (use-package scanner)
 
-(add-hook 'server-after-make-frame-hook #'local/select-start-file)
+(use-package emms)
+(require 'emms-player-simple)
+(require 'emms-source-file)
+(require 'emms-source-playlist)
+(emms-all)
+(emms-default-players)
+(setq emms-player-list '(emms-player-mpv
+                         emms-player-mplayer))
+(setq
+  emms-source-file-default-directory "~/music/"
+  emms-source-playlist-default-format 'mp3
+  emms-player-mpv-environment '("PULSE_PROP_media.role=music")
+  emms-player-mpv-parameters '("--quiet" "--really-quiet" "--no-audio-display" "--force-window=no" "--vo=null")
+  emms-repeat-playlist 1
+  emms-playlist-buffer-name "*Music*")
+
+;; if you use `me/magit-status-bare' you cant use `magit-status' on other other repos you have to unset `--git-dir' and `--work-tree'
+;; use `me/magit-status' insted it unsets those before calling `magit-status'
+(defun me/magit-status ()
+  "removes --git-dir and --work-tree in `magit-git-global-arguments' and calls `magit-status'"
+  (interactive)
+  (require 'magit-git)
+  (setq magit-git-global-arguments (remove bare-git-dir magit-git-global-arguments))
+  (setq magit-git-global-arguments (remove bare-work-tree magit-git-global-arguments))
+  (call-interactively 'magit-status))
+
+(use-package magit)
+
+;; (add-hook 'server-after-make-frame-hook #'local/select-start-file)

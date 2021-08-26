@@ -4,6 +4,7 @@
 * Table of Contents :TOC:
 - [[#important-variables][Important Variables]]
   - [[#enable-eaf][Enable EAF]]
+  - [[#disable-annoying-backup-files][Disable annoying backup files]]
   - [[#disable-fucking-bell-sound][Disable fucking bell sound]]
 - [[#package-management][Package Management]]
   - [[#setup-packageel-to-work-with-melpa][Setup package.el to work with MELPA.]]
@@ -25,6 +26,8 @@
   - [[#enable-org-block-expansion][Enable Org Block expansion]]
   - [[#auto-create-toc][Auto-create TOC]]
 - [[#latexpdf-tools][LaTeX/PDF tools]]
+- [[#emms---emacs-multimedia-system][EMMS - Emacs MultiMedia System]]
+- [[#magit][Magit]]
 - [[#hooks---this-section-must-always-be-last][Hooks - This section must always be last]]
 
 * Important Variables
@@ -32,6 +35,11 @@
 Set to any value other than 1 to disable
 #+begin_src emacs-lisp
 (setq eaf-enable 1)
+#+end_src
+
+** Disable annoying backup files
+#+begin_src emacs-lisp
+(setq make-backup-files nil)
 #+end_src
 
 ** Disable fucking bell sound
@@ -74,6 +82,8 @@ Set to any value other than 1 to disable
 (global-set-key (kbd "C-x a q") 'evil-delete-buffer)
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c C-l") 'org-insert-link)
+(global-set-key (kbd "C-x a a") 'append-to-buffer)
+
 
 (defun run-compiler-on-line ()
   (interactive)
@@ -105,6 +115,12 @@ Set to any value other than 1 to disable
 "f q" 'delete-frame
 "f n" 'make-frame
 "e l" 'other-buff-to-split
+"m s" 'emms-start
+"m e" 'emms-stop
+"m n" 'emms-next
+"m b" 'emms-previous
+"m ?" 'emms-shuffle
+"m p" 'emms-pause
 )
 (nvmap :prefix "Z"
 "X" 'evil-write
@@ -236,12 +252,12 @@ Set to any value other than 1 to disable
 
   #+begin_src emacs-lisp
 (add-hook 'org-mode-hook 'org-indent-mode)
-(setq org-directory "~/org/"
-      org-agenda-files '("~/org/agenda.org")
+(setq org-directory "~/dox/org/"
+      org-agenda-files '("~/dox/org/agenda.org")
       org-default-notes-file (expand-file-name "notes.org" org-directory)
       org-ellipsis " ▼ "
       org-log-done 'time
-      org-journal-dir "~/org/journal/"
+      org-journal-dir "~/dox/org/journal/"
       org-journal-date-format "%B %d, %Y (%A) "
       org-journal-file-format "%Y-%m-%d.org"
       org-hide-emphasis-markers t)
@@ -294,7 +310,42 @@ Set to any value other than 1 to disable
 (use-package scanner)
 #+end_src
 
+* EMMS - Emacs MultiMedia System
+
+#+begin_src emacs-lisp
+(use-package emms)
+(require 'emms-player-simple)
+(require 'emms-source-file)
+(require 'emms-source-playlist)
+(emms-all)
+(emms-default-players)
+(setq emms-player-list '(emms-player-mpv
+                         emms-player-mplayer))
+(setq
+  emms-source-file-default-directory "~/music/"
+  emms-source-playlist-default-format 'mp3
+  emms-player-mpv-environment '("PULSE_PROP_media.role=music")
+  emms-player-mpv-parameters '("--quiet" "--really-quiet" "--no-audio-display" "--force-window=no" "--vo=null")
+  emms-repeat-playlist 1
+  emms-playlist-buffer-name "*Music*")
+#+end_src
+
+* Magit
+#+begin_src emacs-lisp
+;; if you use `me/magit-status-bare' you cant use `magit-status' on other other repos you have to unset `--git-dir' and `--work-tree'
+;; use `me/magit-status' insted it unsets those before calling `magit-status'
+(defun me/magit-status ()
+  "removes --git-dir and --work-tree in `magit-git-global-arguments' and calls `magit-status'"
+  (interactive)
+  (require 'magit-git)
+  (setq magit-git-global-arguments (remove bare-git-dir magit-git-global-arguments))
+  (setq magit-git-global-arguments (remove bare-work-tree magit-git-global-arguments))
+  (call-interactively 'magit-status))
+
+(use-package magit)
+#+end_src
+
 * Hooks - This section must always be last
 #+begin_src emacs-lisp
-(add-hook 'server-after-make-frame-hook #'local/select-start-file)
+;; (add-hook 'server-after-make-frame-hook #'local/select-start-file)
 #+end_src

@@ -6,8 +6,8 @@
  dashboard-mode
  dashboard-return
  counsel-git-checkout
- shell-command
  eww
+ calc
 )
 
 ;; ----- smex-data -----
@@ -30,4 +30,6 @@
  (dashboard-mode . 1)
  (toggle-input-method . 1)
  (set-input-method . 2)
+ (server-edit . 1)
+ (lsp-install-server . 1)
 )
