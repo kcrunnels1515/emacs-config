@@ -17,6 +17,42 @@
   (package-install 'use-package))
 (setq use-package-always-ensure t)
 
+(add-to-list 'load-path "~/.emacs.d/site-lisp/elpa-mirror")
+(require 'elpa-mirror)
+
+;; myelpa is the ONLY repository now, dont forget trailing slash in the directory
+(setq package-archives '(("myelpa" . "~/.emacs.d/myelpa/")))
+
+;; Using garbage magic hack.
+ (use-package gcmh
+   :config
+   (gcmh-mode 1))
+;; Setting garbage collection threshold
+(setq gc-cons-threshold 402653184
+      gc-cons-percentage 0.6)
+
+;; Profile emacs startup
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "*** Emacs loaded in %s with %d garbage collections."
+                     (format "%.2f seconds"
+                             (float-time
+                              (time-subtract after-init-time before-init-time)))
+                     gcs-done)))
+
+;; Silence compiler warnings as they can be pretty disruptive (setq comp-async-report-warnings-errors nil)
+
+;; Silence compiler warnings as they can be pretty disruptive
+(if (boundp 'comp-deferred-compilation)
+    (setq comp-deferred-compilation nil)
+    (setq native-comp-deferred-compilation nil))
+;; In noninteractive sessions, prioritize non-byte-compiled source files to
+;; prevent the use of stale byte-code. Otherwise, it saves us a little IO time
+;; to skip the mtime checks on every *.elc file.
+(setq load-prefer-newer noninteractive)
+
+(delete-selection-mode t)
+
 (use-package general
  :config
  (general-evil-setup t))
@@ -56,9 +92,10 @@
 "r p" 'pkg-update
 "r c" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload emacs config")
 "e c" 'run-compiler-on-line
+"e l" 'other-buff-to-split
+"e o" 'org-latex-export-to-pdf
 "f q" 'delete-frame
 "f n" 'make-frame
-"e l" 'other-buff-to-split
 "m s" 'emms-start
 "m e" 'emms-stop
 "m n" 'emms-next
@@ -191,6 +228,8 @@ org-edit-src-content-indentation 0)
 :commands toc-org-enable
 :init (add-hook 'org-mode-hook 'toc-org-enable))
 
+(use-package org-present)
+
 (use-package pdf-tools)
 (use-package lsp-latex)
 (use-package mw-thesaurus)
@@ -225,3 +264,17 @@ org-edit-src-content-indentation 0)
 (use-package magit)
 
 ;; (add-hook 'server-after-make-frame-hook #'local/select-start-file)
+(eval-after-load "org-present"
+  '(progn
+     (add-hook 'org-present-mode-hook
+               (lambda ()
+                 (org-present-big)
+                 (org-display-inline-images)
+                 (org-present-hide-cursor)
+                 (org-present-read-only)))
+     (add-hook 'org-present-mode-quit-hook
+               (lambda ()
+                 (org-present-small)
+                 (org-remove-inline-images)
+                 (org-present-show-cursor)
+                 (org-present-read-write)))))

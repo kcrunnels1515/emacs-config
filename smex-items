@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
+ ispell
+ evil-paste-from-register
+ org-latex-export-to-pdf
+ ucs-insert
+ print-buffer
  set-input-method
- toggle-input-method
- dashboard-mode
  dashboard-return
- counsel-git-checkout
- eww
- calc
 )
 
 ;; ----- smex-data -----
@@ -32,4 +32,10 @@
  (set-input-method . 2)
  (server-edit . 1)
  (lsp-install-server . 1)
+ (ispell . 4)
+ (print-buffer . 2)
+ (org-latex-export-to-pdf . 2)
+ (ucs-insert . 7)
+ (cua-paste . 1)
+ (evil-paste-from-register . 2)
 )
