@@ -228,7 +228,23 @@ org-edit-src-content-indentation 0)
 :commands toc-org-enable
 :init (add-hook 'org-mode-hook 'toc-org-enable))
 
-(use-package org-present)
+(add-to-list 'load-path "~/.emacs.d/site-lisp/org-present")
+(autoload 'org-present "org-present" nil t)
+
+(eval-after-load "org-present"
+  '(progn
+     (add-hook 'org-present-mode-hook
+               (lambda ()
+                 (org-present-big)
+                 (org-display-inline-images)
+                 (org-present-hide-cursor)
+                 (org-present-read-only)))
+     (add-hook 'org-present-mode-quit-hook
+               (lambda ()
+                 (org-present-small)
+                 (org-remove-inline-images)
+                 (org-present-show-cursor)
+                 (org-present-read-write)))))
 
 (use-package pdf-tools)
 (use-package lsp-latex)
@@ -263,18 +279,6 @@ org-edit-src-content-indentation 0)
 
 (use-package magit)
 
+
+
 ;; (add-hook 'server-after-make-frame-hook #'local/select-start-file)
-(eval-after-load "org-present"
-  '(progn
-     (add-hook 'org-present-mode-hook
-               (lambda ()
-                 (org-present-big)
-                 (org-display-inline-images)
-                 (org-present-hide-cursor)
-                 (org-present-read-only)))
-     (add-hook 'org-present-mode-quit-hook
-               (lambda ()
-                 (org-present-small)
-                 (org-remove-inline-images)
-                 (org-present-show-cursor)
-                 (org-present-read-write)))))
