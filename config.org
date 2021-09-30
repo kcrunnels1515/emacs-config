@@ -14,6 +14,8 @@
   - [[#garbage-collection][Garbage Collection]]
   - [[#native-compil][Native Compil]]
   - [[#delete-selection-mode][Delete Selection Mode]]
+- [[#custom-functions][Custom Functions]]
+- [[#openwith][OpenWith]]
 - [[#keybindings][Keybindings]]
   - [[#custom-keybinds][Custom keybinds]]
   - [[#evil-mode][Evil Mode]]
@@ -34,7 +36,6 @@
 - [[#latexpdf-tools][LaTeX/PDF tools]]
 - [[#emms---emacs-multimedia-system][EMMS - Emacs MultiMedia System]]
 - [[#magit][Magit]]
-- [[#custom-functions][Custom Functions]]
 - [[#hooks---this-section-must-always-be-last][Hooks - This section must always be last]]
 
 * Important Variables
@@ -62,8 +63,9 @@ Set to any value other than 1 to disable
 
 #+begin_src emacs-lisp
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
+
 (package-refresh-contents)
 (package-initialize)
 #+end_src
@@ -127,22 +129,8 @@ Set to any value other than 1 to disable
 (delete-selection-mode t)
 #+end_src
 
-* Keybindings
-
-** Custom keybinds
+* Custom Functions
 #+begin_src emacs-lisp
-(use-package general
- :config
- (general-evil-setup t))
-(global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-(global-set-key (kbd "C-x b") 'counsel-ibuffer)
-(global-set-key (kbd "C-x a q") 'evil-delete-buffer)
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c C-l") 'org-insert-link)
-(global-set-key (kbd "C-x a a") 'append-to-buffer)
-
-
 (defun run-compiler-on-line ()
   (interactive)
   (save-buffer)
@@ -153,7 +141,7 @@ Set to any value other than 1 to disable
 (interactive)
   (package-refresh-contents)
   (cd "/home/kellyr/.emacs.d/site-lisp/emacs-application-framework")
-  (shell-command "git pull")
+  (shell-command "git fetch origin && git reset --hard origin/master")
 )
 
 (defun other-buff-to-split ()
@@ -166,12 +154,65 @@ Set to any value other than 1 to disable
   (evil-window-vsplit)
   (evil-buffer (cdr x)))
 
+#+end_src
+
+* OpenWith
+#+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/site-lisp/openwith")
+(when (require 'openwith nil 'noerror)
+  (setq openwith-associations
+        (list
+         (list (openwith-make-extension-regexp
+                '("mpg" "mpeg" "mp3" "mp4"
+                  "avi" "wmv" "wav" "mov" "flv"
+                  "ogm" "ogg" "mkv"))
+               "mpv"
+               '(file))
+         (list (openwith-make-extension-regexp
+                '("tgz" "tar" "gz" "zip" "txz"
+                  "xz"))
+                  '(file))
+         (list (openwith-make-extension-regexp
+                '("xbm" "pbm" "pgm" "ppm" "pnm"
+                  "png" "gif" "bmp" "tif" "jpeg" "jpg"))
+               "sxiv"
+               '(file))
+         (list (openwith-make-extension-regexp
+                '("doc" "xls" "ppt" "odt" "ods" "odg" "odp"))
+               "libreoffice"
+               '(file))
+         '("\\.lyx" "lyx" (file))
+         '("\\.chm" "kchmviewer" (file))
+         (list (openwith-make-extension-regexp
+                '("pdf" "ps" "ps.gz" "dvi" "djvu" "epub"))
+               "zathura"
+               '(file))
+         ))
+  (openwith-mode 1))
+#+end_src
+
+* Keybindings
+** Custom keybinds
+#+begin_src emacs-lisp
+(use-package general
+ :config
+ (general-evil-setup t))
+(global-set-key (kbd "C-=") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-x b") 'counsel-ibuffer)
+(global-set-key (kbd "C-x a q") 'evil-delete-buffer)
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c C-l") 'org-insert-link)
+(global-set-key (kbd "C-x a a") 'append-to-buffer)
+(global-set-key (kbd "C-c o") #'er-open-with)
+
 (nvmap :prefix "SPC"
 "r p" 'pkg-update
 "r c" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload emacs config")
 "e c" 'run-compiler-on-line
 "e l" 'other-buff-to-split
 "e o" 'org-latex-export-to-pdf
+"e p" 'print-buffer
 "f q" 'delete-frame
 "f n" 'make-frame
 "m s" 'emms-start
@@ -304,7 +345,6 @@ Set to any value other than 1 to disable
     vterm-max-scrollback 5000)
   #+end_src
 
-
 * ORG MODE
 
 ** Defining some things
@@ -335,11 +375,15 @@ Set to any value other than 1 to disable
 ** Org Link abbreviations
 
    #+begin_src emacs-lisp
-(setq org-link-abbrev-alist    ; This overwrites the default Doom org-link-abbrev-list
-        '(("google" . "http://www.google.com/search?q=")
-          ("arch-wiki" . "https://wiki.archlinux.org/index.php/")
-          ("ddg" . "https://duckduckgo.com/?q=")
-          ("wiki" . "https://en.wikipedia.org/wiki/")))
+   (setq org-link-abbrev-alist    ; This overwrites the default Doom org-link-abbrev-list
+                 '(
+                   ("google" . "http://www.google.com/search?q=")
+                   ("arch-wiki" . "https://wiki.archlinux.org/index.php/")
+                   ("ddg" . "https://duckduckgo.com/?q=")
+                   ("wiki" . "https://en.wikipedia.org/wiki/")
+                   ("dox" . "/home/kellyr/dox")
+                   )
+   )
    #+end_src
 
 ** Enable Org Block expansion
@@ -426,10 +470,6 @@ Set to any value other than 1 to disable
 (use-package magit)
 #+end_src
 
-
-* Custom Functions
-#+begin_src emacs-lisp
-#+end_src
 
 * Hooks - This section must always be last
 #+begin_src emacs-lisp

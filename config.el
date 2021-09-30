@@ -8,8 +8,9 @@
     )
 
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
+
 (package-refresh-contents)
 (package-initialize)
 
@@ -53,18 +54,6 @@
 
 (delete-selection-mode t)
 
-(use-package general
- :config
- (general-evil-setup t))
-(global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-(global-set-key (kbd "C-x b") 'counsel-ibuffer)
-(global-set-key (kbd "C-x a q") 'evil-delete-buffer)
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c C-l") 'org-insert-link)
-(global-set-key (kbd "C-x a a") 'append-to-buffer)
-
-
 (defun run-compiler-on-line ()
   (interactive)
   (save-buffer)
@@ -75,7 +64,7 @@
 (interactive)
   (package-refresh-contents)
   (cd "/home/kellyr/.emacs.d/site-lisp/emacs-application-framework")
-  (shell-command "git pull")
+  (shell-command "git fetch origin && git reset --hard origin/master")
 )
 
 (defun other-buff-to-split ()
@@ -88,12 +77,57 @@
   (evil-window-vsplit)
   (evil-buffer (cdr x)))
 
+(add-to-list 'load-path "~/.emacs.d/site-lisp/openwith")
+(when (require 'openwith nil 'noerror)
+  (setq openwith-associations
+        (list
+         (list (openwith-make-extension-regexp
+                '("mpg" "mpeg" "mp3" "mp4"
+                  "avi" "wmv" "wav" "mov" "flv"
+                  "ogm" "ogg" "mkv"))
+               "mpv"
+               '(file))
+         (list (openwith-make-extension-regexp
+                '("tgz" "tar" "gz" "zip" "txz"
+                  "xz"))
+                  '(file))
+         (list (openwith-make-extension-regexp
+                '("xbm" "pbm" "pgm" "ppm" "pnm"
+                  "png" "gif" "bmp" "tif" "jpeg" "jpg"))
+               "sxiv"
+               '(file))
+         (list (openwith-make-extension-regexp
+                '("doc" "xls" "ppt" "odt" "ods" "odg" "odp"))
+               "libreoffice"
+               '(file))
+         '("\\.lyx" "lyx" (file))
+         '("\\.chm" "kchmviewer" (file))
+         (list (openwith-make-extension-regexp
+                '("pdf" "ps" "ps.gz" "dvi" "djvu" "epub"))
+               "zathura"
+               '(file))
+         ))
+  (openwith-mode 1))
+
+(use-package general
+ :config
+ (general-evil-setup t))
+(global-set-key (kbd "C-=") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-x b") 'counsel-ibuffer)
+(global-set-key (kbd "C-x a q") 'evil-delete-buffer)
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c C-l") 'org-insert-link)
+(global-set-key (kbd "C-x a a") 'append-to-buffer)
+(global-set-key (kbd "C-c o") #'er-open-with)
+
 (nvmap :prefix "SPC"
 "r p" 'pkg-update
 "r c" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload emacs config")
 "e c" 'run-compiler-on-line
 "e l" 'other-buff-to-split
 "e o" 'org-latex-export-to-pdf
+"e p" 'print-buffer
 "f q" 'delete-frame
 "f n" 'make-frame
 "m s" 'emms-start
@@ -212,10 +246,14 @@
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 (setq org-link-abbrev-alist    ; This overwrites the default Doom org-link-abbrev-list
-        '(("google" . "http://www.google.com/search?q=")
-          ("arch-wiki" . "https://wiki.archlinux.org/index.php/")
-          ("ddg" . "https://duckduckgo.com/?q=")
-          ("wiki" . "https://en.wikipedia.org/wiki/")))
+              '(
+                ("google" . "http://www.google.com/search?q=")
+                ("arch-wiki" . "https://wiki.archlinux.org/index.php/")
+                ("ddg" . "https://duckduckgo.com/?q=")
+                ("wiki" . "https://en.wikipedia.org/wiki/")
+                ("dox" . "/home/kellyr/dox")
+                )
+)
 
 (use-package org-tempo
  :ensure nil)
@@ -278,7 +316,5 @@ org-edit-src-content-indentation 0)
   (call-interactively 'magit-status))
 
 (use-package magit)
-
-
 
 ;; (add-hook 'server-after-make-frame-hook #'local/select-start-file)
