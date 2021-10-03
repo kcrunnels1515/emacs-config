@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("refs.bib"
+(("MASTER.org"
+ (filename . "~/dox/MASTER.org")
+ (front-context-string . "h]]\n\n* English\n\n")
+ (rear-context-string . "rg][Wayland Smit")
+ (position . 3418))
+("refs.bib"
  (filename . "~/dox/refs.bib")
  (front-context-string . "@book{wilkinsonm")
  (rear-context-string)

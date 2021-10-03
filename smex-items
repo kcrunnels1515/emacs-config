@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
+ shell-command
+ org-mode
  ispell
  evil-paste-from-register
  org-latex-export-to-pdf
  ucs-insert
  print-buffer
- set-input-method
- dashboard-return
 )
 
 ;; ----- smex-data -----
@@ -22,7 +22,7 @@
  (eaf-open-demo . 1)
  (eaf-open-camera . 1)
  (eaf-open-browser . 1)
- (shell-command . 1)
+ (shell-command . 2)
  (counsel-git-checkout . 1)
  (epcs:kill-all-processes . 1)
  (epc:controller . 1)
@@ -38,4 +38,5 @@
  (ucs-insert . 7)
  (cua-paste . 1)
  (evil-paste-from-register . 2)
+ (org-mode . 1)
 )

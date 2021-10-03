@@ -14,11 +14,6 @@
   - [[#garbage-collection][Garbage Collection]]
   - [[#native-compil][Native Compil]]
   - [[#delete-selection-mode][Delete Selection Mode]]
-- [[#custom-functions][Custom Functions]]
-- [[#openwith][OpenWith]]
-- [[#keybindings][Keybindings]]
-  - [[#custom-keybinds][Custom keybinds]]
-  - [[#evil-mode][Evil Mode]]
 - [[#theme][Theme]]
 - [[#ui][UI]]
   - [[#basic][Basic]]
@@ -36,6 +31,9 @@
 - [[#latexpdf-tools][LaTeX/PDF tools]]
 - [[#emms---emacs-multimedia-system][EMMS - Emacs MultiMedia System]]
 - [[#magit][Magit]]
+- [[#custom][Custom]]
+  - [[#functions][Functions]]
+  - [[#keybindings][Keybindings]]
 - [[#hooks---this-section-must-always-be-last][Hooks - This section must always be last]]
 
 * Important Variables
@@ -127,122 +125,6 @@ Set to any value other than 1 to disable
 ** Delete Selection Mode
 #+begin_src emacs-lisp
 (delete-selection-mode t)
-#+end_src
-
-* Custom Functions
-#+begin_src emacs-lisp
-(defun run-compiler-on-line ()
-  (interactive)
-  (save-buffer)
-  (shell-command-on-region (line-beginning-position)
-                           (line-end-position)
-                           (format "compiler %s" buffer-file-name)))
-(defun pkg-update ()
-(interactive)
-  (package-refresh-contents)
-  (cd "/home/kellyr/.emacs.d/site-lisp/emacs-application-framework")
-  (shell-command "git fetch origin && git reset --hard origin/master")
-)
-
-(defun other-buff-to-split ()
-  (interactive)
-  (ivy-read "Switch to buffer: " (counsel-ibuffer--get-buffers)
-            :history 'counsel-ibuffer-history
-            :action #'other-buff-to-split-1))
-
-(defun other-buff-to-split-1 (x)
-  (evil-window-vsplit)
-  (evil-buffer (cdr x)))
-
-#+end_src
-
-* OpenWith
-#+begin_src emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/site-lisp/openwith")
-(when (require 'openwith nil 'noerror)
-  (setq openwith-associations
-        (list
-         (list (openwith-make-extension-regexp
-                '("mpg" "mpeg" "mp3" "mp4"
-                  "avi" "wmv" "wav" "mov" "flv"
-                  "ogm" "ogg" "mkv"))
-               "mpv"
-               '(file))
-         (list (openwith-make-extension-regexp
-                '("tgz" "tar" "gz" "zip" "txz"
-                  "xz"))
-                  '(file))
-         (list (openwith-make-extension-regexp
-                '("xbm" "pbm" "pgm" "ppm" "pnm"
-                  "png" "gif" "bmp" "tif" "jpeg" "jpg"))
-               "sxiv"
-               '(file))
-         (list (openwith-make-extension-regexp
-                '("doc" "xls" "ppt" "odt" "ods" "odg" "odp"))
-               "libreoffice"
-               '(file))
-         '("\\.lyx" "lyx" (file))
-         '("\\.chm" "kchmviewer" (file))
-         (list (openwith-make-extension-regexp
-                '("pdf" "ps" "ps.gz" "dvi" "djvu" "epub"))
-               "zathura"
-               '(file))
-         ))
-  (openwith-mode 1))
-#+end_src
-
-* Keybindings
-** Custom keybinds
-#+begin_src emacs-lisp
-(use-package general
- :config
- (general-evil-setup t))
-(global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-(global-set-key (kbd "C-x b") 'counsel-ibuffer)
-(global-set-key (kbd "C-x a q") 'evil-delete-buffer)
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c C-l") 'org-insert-link)
-(global-set-key (kbd "C-x a a") 'append-to-buffer)
-(global-set-key (kbd "C-c o") #'er-open-with)
-
-(nvmap :prefix "SPC"
-"r p" 'pkg-update
-"r c" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload emacs config")
-"e c" 'run-compiler-on-line
-"e l" 'other-buff-to-split
-"e o" 'org-latex-export-to-pdf
-"e p" 'print-buffer
-"f q" 'delete-frame
-"f n" 'make-frame
-"m s" 'emms-start
-"m e" 'emms-stop
-"m n" 'emms-next
-"m b" 'emms-previous
-"m ?" 'emms-shuffle
-"m p" 'emms-pause
-)
-(nvmap :prefix "Z"
-"X" 'evil-write
-"g" 'count-words
-)
-#+end_src
-
-
-** Evil Mode
-
-#+begin_src emacs-lisp
-(use-package evil
-:init
-(setq evil-want-integration t)
-(setq evil-want-keybinding nil)
-(setq evil-vsplit-window-right t)
-(setq evil-split-window-below t)
-(evil-mode))
-(use-package evil-collection
-  :after evil
-  :config
-  (evil-collection-init))
 #+end_src
 
 * Theme
@@ -470,8 +352,114 @@ Set to any value other than 1 to disable
 (use-package magit)
 #+end_src
 
+* Custom
+** Functions
+#+begin_src emacs-lisp
+(defun kcr/run-compiler-on-line ()
+  (interactive)
+  (save-buffer)
+  (shell-command-on-region (line-beginning-position)
+                           (line-end-position)
+                           (format "compiler %s" buffer-file-name)))
+(defun kcr/pkg-update ()
+(interactive)
+  (package-refresh-contents)
+  (cd "/home/kellyr/.emacs.d/site-lisp/emacs-application-framework")
+  (shell-command "git fetch origin && git reset --hard origin/master")
+)
+
+(defun kcr/other-buff-to-split ()
+  (interactive)
+  (ivy-read "Switch to buffer: " (counsel-ibuffer--get-buffers)
+            :history 'counsel-ibuffer-history
+            :action #'kcr/other-buff-to-split-1))
+
+(defun kcr/other-buff-to-split-1 (x)
+  (evil-window-vsplit)
+  (evil-buffer (cdr x)))
+
+(defun kcr/open-with (arg)
+  "Open visited file in default external program.
+When in dired mode, open file under the cursor.
+With a prefix ARG always prompt for command to use."
+  (interactive "P")
+  (let* ((current-file-name
+          (if (eq major-mode 'dired-mode)
+              (dired-get-file-for-visit)
+            buffer-file-name))
+         (open (pcase system-type
+                 (`darwin "open")
+                 ((or `gnu `gnu/linux `gnu/kfreebsd) "rifle")))
+         (program (if (or arg (not open))
+                      (read-shell-command "Open current file with: ")
+                    open)))
+    (call-process program nil 0 nil current-file-name)))
+
+(defun kcr/insert-link-to-file (&optional filename)
+  (interactive)
+  (let ((value (car (find-file-read-args "Choose file: " nil))))
+    (insert "[[" value "][filename]]" )
+    )
+)
+#+end_src
+
+** Keybindings
+#+begin_src emacs-lisp
+(use-package general
+ :config
+ (general-evil-setup t))
+(global-unset-key (kbd "C-i"))
+(global-set-key (kbd "C-=") 'text-scale-increase)
+(global-set-key (kbd "C--") 'text-scale-decrease)
+(global-set-key (kbd "C-x b") 'counsel-ibuffer)
+(global-set-key (kbd "C-x a q") 'evil-delete-buffer)
+(global-set-key (kbd "C-c l") 'org-store-link)
+(global-set-key (kbd "C-c C-l") 'org-insert-link)
+(global-set-key (kbd "C-x a a") 'append-to-buffer)
+(global-set-key (kbd "C-c o") #'kcr/open-with)
+(global-set-key (kbd "C-c C-i") 'kcr/insert-link-to-file)
+
+(nvmap :prefix "SPC"
+"r p" 'kcr/pkg-update
+"r c" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload emacs config")
+"e c" 'kcr/run-compiler-on-line
+"e l" 'kcr/other-buff-to-split
+"e o" 'org-latex-export-to-pdf
+"e p" 'print-buffer
+"f q" 'delete-frame
+"f n" 'make-frame
+"m s" 'emms-start
+"m e" 'emms-stop
+"m n" 'emms-next
+"m b" 'emms-previous
+"m ?" 'emms-shuffle
+"m p" 'emms-pause
+)
+(nvmap :prefix "Z"
+"X" 'evil-write
+"g" 'count-words
+)
+#+end_src
+
+*** Evil Mode
+
+#+begin_src emacs-lisp
+(use-package evil
+:init
+(setq evil-want-integration t)
+(setq evil-want-keybinding nil)
+(setq evil-vsplit-window-right t)
+(setq evil-split-window-below t)
+(evil-mode))
+(use-package evil-collection
+  :after evil
+  :config
+  (evil-collection-init))
+#+end_src
 
 * Hooks - This section must always be last
 #+begin_src emacs-lisp
 ;; (add-hook 'server-after-make-frame-hook #'local/select-start-file)
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c C-i") nil))
 #+end_src
