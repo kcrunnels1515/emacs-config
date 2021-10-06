@@ -6,10 +6,10 @@
   - [[#enable-eaf][Enable EAF]]
   - [[#disable-annoying-backup-files][Disable annoying backup files]]
   - [[#disable-fucking-bell-sound][Disable fucking bell sound]]
+  - [[#config-files-eshell][Config files eshell]]
 - [[#package-management][Package Management]]
   - [[#setup-packageel-to-work-with-melpa][Setup package.el to work with MELPA.]]
   - [[#installing-use-package][Installing use-package]]
-  - [[#set-up-local-repo][Set up local repo]]
 - [[#backend][Backend]]
   - [[#garbage-collection][Garbage Collection]]
   - [[#native-compil][Native Compil]]
@@ -20,6 +20,7 @@
   - [[#dashboard][Dashboard]]
   - [[#m-x-thing][M-x thing]]
   - [[#customize-emacsclient-startup-choice][Customize emacsclient startup choice.]]
+- [[#elfeed][Elfeed]]
 - [[#emacs-terminal][Emacs terminal]]
 - [[#org-mode][ORG MODE]]
   - [[#defining-some-things][Defining some things]]
@@ -32,6 +33,7 @@
 - [[#emms---emacs-multimedia-system][EMMS - Emacs MultiMedia System]]
 - [[#magit][Magit]]
 - [[#custom][Custom]]
+  - [[#yow][Yow]]
   - [[#functions][Functions]]
   - [[#keybindings][Keybindings]]
 - [[#hooks---this-section-must-always-be-last][Hooks - This section must always be last]]
@@ -56,6 +58,14 @@ Set to any value other than 1 to disable
     )
 #+end_src
 
+** Config files eshell
+#+begin_src emacs-lisp
+(setq
+eshell-rc-script "~/.emacs.d/eshell.rc"
+;;(eshell-login-script "~/.emacs.d/eshell.login")
+)
+#+end_src
+
 * Package Management
 ** Setup package.el to work with MELPA.
 
@@ -74,16 +84,6 @@ Set to any value other than 1 to disable
   (unless (package-installed-p 'use-package)
     (package-install 'use-package))
   (setq use-package-always-ensure t)
-#+end_src
-
-** Set up local repo
-#+begin_src emacs-lisp
-(add-to-list 'load-path "~/.emacs.d/site-lisp/elpa-mirror")
-(require 'elpa-mirror)
-
-;; myelpa is the ONLY repository now, dont forget trailing slash in the directory
-(setq package-archives '(("myelpa" . "~/.emacs.d/myelpa/")))
-
 #+end_src
 
 * Backend
@@ -217,6 +217,60 @@ Set to any value other than 1 to disable
   "Open specific file."
   (find-file "~/scratch.org")
 )
+#+end_src
+
+* Elfeed
+#+begin_src emacs-lisp
+(use-package elfeed
+ :config
+ (setq elfeed-search-feed-face ":foreground #fff :weight bold"
+       elfeed-feeds (quote
+                      (("https://www.reddit.com/r/linuxmemes.rss" reddit linux)
+                       ("https://www.reddit.com/r/linuxmasterrace.rss" reddit commandline)
+                       ("https://www.reddit.com/r/emacs.rss" reddit emacs)
+                       ("https://hackaday.com/blog/feed/" hackaday linux)
+                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA" lukesmith youtube)
+                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCVls1GmFKf6WlTraIb_IaJg" distrotube youtube)
+                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCXuqSBlHAE6Xw-yeJA0Tunw" techtips youtube)
+                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCJOh5FKisc0hUlEeWFBlD-w" janmisali youtube)
+                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzfyYtgvkx5mLy8nlLlayYg" vivziepop youtube)
+                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCmnlTWVJysjWPFiZhQ5uudg" martymusic youtube)
+                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCJ0-OtVpF0wOKEqT2Z1HEtA" electroboom youtube)
+                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCp68_FLety0O-n9QU6phsgw" colinfurze youtube)
+                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCBa659QWEk1AI4Tg--mrJ2A" tomscott youtube)
+                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q" kurzgesagt youtube)
+                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UC7YOGHUfC1Tb6E4pudI9STA" mentaloutlaw youtube)
+                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
+                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
+                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
+                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
+                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
+                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
+                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
+                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
+                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
+                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
+                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
+                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
+                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
+                       )
+                     )
+  )
+)
+
+(use-package elfeed-goodies
+ :init
+ (elfeed-goodies/setup)
+ :config
+ (setq elfeed-goodies/entry-pane-size 0.5))
+
+(add-hook 'elfeed-show-mode-hook 'visual-line-mode)
+(evil-define-key 'normal elfeed-show-mode-map
+  (kbd "J") 'elfeed-goodies/split-show-next
+  (kbd "K") 'elfeed-goodies/split-show-prev)
+(evil-define-key 'normal elfeed-search-mode-map
+ (kbd "J") 'elfeed-goodies/split-show-next
+ (kbd "K") 'elfeed-goodies/split-show-prev)
 #+end_src
 
 * Emacs terminal
@@ -353,6 +407,11 @@ Set to any value other than 1 to disable
 #+end_src
 
 * Custom
+** Yow
+#+begin_src emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/site-lisp/yow.el")
+#+end_src
+
 ** Functions
 #+begin_src emacs-lisp
 (defun kcr/run-compiler-on-line ()
@@ -396,10 +455,18 @@ With a prefix ARG always prompt for command to use."
     (call-process program nil 0 nil current-file-name)))
 
 (defun kcr/insert-link-to-file (&optional filename)
+  "Insert file as org link."
   (interactive)
   (let ((value (car (find-file-read-args "Choose file: " nil))))
     (insert "[[" value "][filename]]" )
     )
+)
+
+(defun kcr/elisp-edit ()
+  "Toggle emacs lisp editing mode"
+  (interactive)
+  (emacs-lisp-mode)
+  (electric-pair-local-mode)
 )
 #+end_src
 

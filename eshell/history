@@ -4,3 +4,20 @@ ls
 clear
 ls
 exit
+ls
+which ls
+v
+nvim
+clear
+ls
+ls
+gs
+cd dox
+l
+ll
+ls
+find-file
+find-file letter
+cat #<buffer *doctor*>
+print
+print --help
