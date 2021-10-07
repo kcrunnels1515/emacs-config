@@ -16,7 +16,7 @@ eshell-rc-script "~/.emacs.d/eshell.rc"
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
 
-(package-refresh-contents)
+;;(package-refresh-contents)
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -123,57 +123,6 @@ eshell-rc-script "~/.emacs.d/eshell.rc"
   (find-file "~/scratch.org")
 )
 
-(use-package elfeed
- :config
- (setq elfeed-search-feed-face ":foreground #fff :weight bold"
-       elfeed-feeds (quote
-                      (("https://www.reddit.com/r/linuxmemes.rss" reddit linux)
-                       ("https://www.reddit.com/r/linuxmasterrace.rss" reddit commandline)
-                       ("https://www.reddit.com/r/emacs.rss" reddit emacs)
-                       ("https://hackaday.com/blog/feed/" hackaday linux)
-                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UC2eYFnH61tmytImy1mTYvhA" lukesmith youtube)
-                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCVls1GmFKf6WlTraIb_IaJg" distrotube youtube)
-                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCXuqSBlHAE6Xw-yeJA0Tunw" techtips youtube)
-                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCJOh5FKisc0hUlEeWFBlD-w" janmisali youtube)
-                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzfyYtgvkx5mLy8nlLlayYg" vivziepop youtube)
-                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCmnlTWVJysjWPFiZhQ5uudg" martymusic youtube)
-                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCJ0-OtVpF0wOKEqT2Z1HEtA" electroboom youtube)
-                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCp68_FLety0O-n9QU6phsgw" colinfurze youtube)
-                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCBa659QWEk1AI4Tg--mrJ2A" tomscott youtube)
-                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UCsXVk37bltHxD1rDPwtNM8Q" kurzgesagt youtube)
-                       ("https://www.youtube.com/feeds/videos.xml?channel_id=UC7YOGHUfC1Tb6E4pudI9STA" mentaloutlaw youtube)
-                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
-                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
-                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
-                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
-                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
-                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
-                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
-                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
-                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
-                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
-                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
-                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
-                       ;;("https://www.youtube.com/feeds/videos.xml?channel_id=" word youtube)
-                       )
-                     )
-  )
-)
-
-(use-package elfeed-goodies
- :init
- (elfeed-goodies/setup)
- :config
- (setq elfeed-goodies/entry-pane-size 0.5))
-
-(add-hook 'elfeed-show-mode-hook 'visual-line-mode)
-(evil-define-key 'normal elfeed-show-mode-map
-  (kbd "J") 'elfeed-goodies/split-show-next
-  (kbd "K") 'elfeed-goodies/split-show-prev)
-(evil-define-key 'normal elfeed-search-mode-map
- (kbd "J") 'elfeed-goodies/split-show-next
- (kbd "K") 'elfeed-goodies/split-show-prev)
-
 (use-package vterm)
 (setq shell-file-name "/usr/bin/zsh"
     vterm-max-scrollback 5000)
@@ -267,7 +216,7 @@ org-edit-src-content-indentation 0)
 
 (use-package magit)
 
-(add-to-list 'load-path "~/.emacs.d/site-lisp/yow.el")
+(load-file "~/.emacs.d/site-lisp/yow.elc")
 
 (defun kcr/run-compiler-on-line ()
   (interactive)
