@@ -1,20 +1,20 @@
 
 ;; ----- smex-history -----
 (
- package-list-packages
  eval-buffer
+ kcr/elisp-edit
+ load-file
+ magit-clone
+ emacs-lisp-byte-compile
+ package-list-packages
  list-packages
- find-grep
- undo
- shell-command
- org-mode
 )
 
 ;; ----- smex-data -----
 (
  (eww . 1)
  (gnus . 1)
- (eval-buffer . 3)
+ (eval-buffer . 7)
  (bookmark-menu . 1)
  (bookmark-set . 1)
  (dashboard-return . 3)
@@ -43,4 +43,9 @@
  (list-packages . 2)
  (find-grep . 1)
  (package-list-packages . 1)
+ (emacs-lisp-byte-compile . 3)
+ (load-file . 3)
+ (yow . 4)
+ (magit-clone . 1)
+ (kcr/elisp-edit . 1)
 )
