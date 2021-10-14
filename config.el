@@ -320,6 +320,24 @@ With a prefix ARG always prompt for command to use."
   :config
   (evil-collection-init))
 
+(use-package exwm)
+;;(use-package exwm-float)
+(use-package exwm-mff)
+(require 'exwm)
+(require 'exwm-config)
+(exwm-config-default)
+(require 'exwm-randr)
+
+(setq exwm-randr-workspace-output-plist '(0 "VGA-1" 1 "HDMI-1"))
+(add-hook 'exwm-randr-screen-change-hook
+           (lambda ()
+             (start-process-shell-command "xrandr" nil "xrandr --output VGA-1 --mode 1366x768 --pos 0x0 --rotate normal --output HDMI-1 --mode 1280x800 --pos 1366x0 --rotate normal")))
+(exwm-randr-enable)
+(require 'exwm-systemtray)
+(exwm-systemtray-enable)
+(setq user-full-name "Kelly Runnels"
+      user-mail-address "runnelk@patriots.cf.edu")
+
 ;; (add-hook 'server-after-make-frame-hook #'local/select-start-file)
 (with-eval-after-load 'org
   (define-key org-mode-map (kbd "C-c C-i") nil))

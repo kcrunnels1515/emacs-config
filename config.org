@@ -20,7 +20,6 @@
   - [[#dashboard][Dashboard]]
   - [[#m-x-thing][M-x thing]]
   - [[#customize-emacsclient-startup-choice][Customize emacsclient startup choice.]]
-- [[#elfeed][Elfeed]]
 - [[#emacs-terminal][Emacs terminal]]
 - [[#org-mode][ORG MODE]]
   - [[#defining-some-things][Defining some things]]
@@ -35,7 +34,9 @@
 - [[#custom][Custom]]
   - [[#yow][Yow]]
   - [[#functions][Functions]]
+  - [[#macros][Macros]]
   - [[#keybindings][Keybindings]]
+- [[#exwm][EXWM]]
 - [[#hooks---this-section-must-always-be-last][Hooks - This section must always be last]]
 
 * Important Variables
@@ -416,6 +417,15 @@ With a prefix ARG always prompt for command to use."
 )
 #+end_src
 
+** Macros
+#+begin_src emacs-lisp
+(defmacro kcr/key (keychord command)
+  "Insert a keybinding."
+  `(global-unset-key (kbd ,keychord))
+  `(global-set-key (kbd ,keychord) ',command)
+)
+#+end_src
+
 ** Keybindings
 #+begin_src emacs-lisp
 (use-package general
@@ -468,6 +478,31 @@ With a prefix ARG always prompt for command to use."
   :after evil
   :config
   (evil-collection-init))
+#+end_src
+
+* EXWM
+#+begin_src emacs-lisp
+(use-package exwm)
+;;(use-package exwm-float)
+(use-package exwm-mff)
+(require 'exwm)
+(require 'exwm-config)
+(exwm-config-default)
+(require 'exwm-randr)
+
+(setq exwm-randr-workspace-output-plist '(0 "VGA-1" 1 "HDMI-1"))
+(add-hook 'exwm-randr-screen-change-hook
+           (lambda ()
+             (start-process-shell-command "xrandr" nil "xrandr --output VGA-1 --mode 1366x768 --pos 0x0 --rotate normal --output HDMI-1 --mode 1280x800 --pos 1366x0 --rotate normal")))
+(exwm-randr-enable)
+(add-hook 'exwm-update-class-hook
+          (lambda ()
+          (exwm-workspace-rename-buffer exwm-class-name)))
+(require 'exwm-systemtray)
+(exwm-systemtray-enable)
+(setq user-full-name "Kelly Runnels"
+      user-mail-address "runnelk@patriots.cf.edu")
+(exwm-enable)
 #+end_src
 
 * Hooks - This section must always be last

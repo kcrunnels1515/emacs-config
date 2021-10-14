@@ -21,3 +21,5 @@ find-file letter
 cat #<buffer *doctor*>
 print
 print --help
+htop
+killall emacs

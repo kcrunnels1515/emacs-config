@@ -1,20 +1,20 @@
 
 ;; ----- smex-history -----
 (
+ exwm-exit
  eval-buffer
- kcr/elisp-edit
+ eshell
+ toggle-frame-fullscreen
+ maximize-window
+ bury-buffer
  load-file
- magit-clone
- emacs-lisp-byte-compile
- package-list-packages
- list-packages
 )
 
 ;; ----- smex-data -----
 (
  (eww . 1)
  (gnus . 1)
- (eval-buffer . 7)
+ (eval-buffer . 8)
  (bookmark-menu . 1)
  (bookmark-set . 1)
  (dashboard-return . 3)
@@ -48,4 +48,9 @@
  (yow . 4)
  (magit-clone . 1)
  (kcr/elisp-edit . 1)
+ (bury-buffer . 3)
+ (maximize-window . 2)
+ (toggle-frame-fullscreen . 2)
+ (eshell . 1)
+ (exwm-exit . 1)
 )
