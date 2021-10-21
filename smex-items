@@ -1,20 +1,20 @@
 
 ;; ----- smex-history -----
 (
- exwm-exit
+ electric-pair-local-mode
  eval-buffer
+ lisp-eval-defun
+ eval-region
+ kcr/elisp-edit
+ exwm-exit
  eshell
- toggle-frame-fullscreen
- maximize-window
- bury-buffer
- load-file
 )
 
 ;; ----- smex-data -----
 (
  (eww . 1)
  (gnus . 1)
- (eval-buffer . 8)
+ (eval-buffer . 19)
  (bookmark-menu . 1)
  (bookmark-set . 1)
  (dashboard-return . 3)
@@ -47,10 +47,13 @@
  (load-file . 3)
  (yow . 4)
  (magit-clone . 1)
- (kcr/elisp-edit . 1)
+ (kcr/elisp-edit . 2)
  (bury-buffer . 3)
  (maximize-window . 2)
  (toggle-frame-fullscreen . 2)
  (eshell . 1)
  (exwm-exit . 1)
+ (eval-region . 1)
+ (lisp-eval-defun . 1)
+ (electric-pair-local-mode . 1)
 )

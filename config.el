@@ -183,6 +183,23 @@ org-edit-src-content-indentation 0)
                  (org-present-show-cursor)
                  (org-present-read-write)))))
 
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename "/home/kellyr/dox/org"))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
+  (setq org-roam-v2-ack t)
+
 (use-package pdf-tools)
 (use-package lsp-latex)
 (use-package mw-thesaurus)
@@ -273,6 +290,12 @@ With a prefix ARG always prompt for command to use."
   (electric-pair-local-mode)
 )
 
+(defmacro kcr/key (keychord command)
+  "Insert a keybinding."
+  `(global-unset-key (kbd ,keychord))
+  `(global-set-key (kbd ,keychord) ',command)
+)
+
 (use-package general
  :config
  (general-evil-setup t))
@@ -333,10 +356,14 @@ With a prefix ARG always prompt for command to use."
            (lambda ()
              (start-process-shell-command "xrandr" nil "xrandr --output VGA-1 --mode 1366x768 --pos 0x0 --rotate normal --output HDMI-1 --mode 1280x800 --pos 1366x0 --rotate normal")))
 (exwm-randr-enable)
+(add-hook 'exwm-update-class-hook
+          (lambda ()
+          (exwm-workspace-rename-buffer exwm-class-name)))
 (require 'exwm-systemtray)
 (exwm-systemtray-enable)
 (setq user-full-name "Kelly Runnels"
       user-mail-address "runnelk@patriots.cf.edu")
+(exwm-enable)
 
 ;; (add-hook 'server-after-make-frame-hook #'local/select-start-file)
 (with-eval-after-load 'org
