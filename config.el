@@ -12,6 +12,8 @@ eshell-rc-script "~/.emacs.d/eshell.rc"
 ;;(eshell-login-script "~/.emacs.d/eshell.login")
 )
 
+(setq package-native-compile t)
+
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/") t)
@@ -289,6 +291,16 @@ With a prefix ARG always prompt for command to use."
   (emacs-lisp-mode)
   (electric-pair-local-mode)
 )
+
+(defun kcr/wrap-eqn ()
+"Wrap equation in org-mode markers"
+  (interactive)
+  (let ((point1 (region-beginning))
+	(point2 (+ 2 (region-end))))
+    (goto-char point1)
+    (insert "\\" "\(")
+    (goto-char point2))
+    (insert "\\" "\)"))
 
 (defmacro kcr/key (keychord command)
   "Insert a keybinding."
