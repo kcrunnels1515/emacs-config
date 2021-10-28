@@ -299,8 +299,8 @@ With a prefix ARG always prompt for command to use."
 	(point2 (+ 2 (region-end))))
     (goto-char point1)
     (insert "\\" "\(")
-    (goto-char point2))
-    (insert "\\" "\)"))
+    (goto-char point2)
+    (insert "\\" "\)")))
 
 (defmacro kcr/key (keychord command)
   "Insert a keybinding."
@@ -312,21 +312,21 @@ With a prefix ARG always prompt for command to use."
  :config
  (general-evil-setup t))
 (global-unset-key (kbd "C-i"))
-(global-set-key (kbd "C-=") 'text-scale-increase)
-(global-set-key (kbd "C--") 'text-scale-decrease)
-(global-set-key (kbd "C-x b") 'counsel-ibuffer)
-(global-set-key (kbd "C-x a q") 'evil-delete-buffer)
-(global-set-key (kbd "C-c l") 'org-store-link)
-(global-set-key (kbd "C-c C-l") 'org-insert-link)
-(global-set-key (kbd "C-x a a") 'append-to-buffer)
+(global-set-key (kbd "C-=") #'text-scale-increase)
+(global-set-key (kbd "C--") #'text-scale-decrease)
+(global-set-key (kbd "C-x b") #'counsel-ibuffer)
+(global-set-key (kbd "C-x a q") #'evil-delete-buffer)
+(global-set-key (kbd "C-c l") #'org-store-link)
+(global-set-key (kbd "C-c C-l") #'org-insert-link)
+(global-set-key (kbd "C-x a a") #'append-to-buffer)
 (global-set-key (kbd "C-c o") #'kcr/open-with)
-(global-set-key (kbd "C-c C-i") 'kcr/insert-link-to-file)
+(global-set-key (kbd "C-c C-i") #'kcr/insert-link-to-file)
 
 (nvmap :prefix "SPC"
-"r p" 'kcr/pkg-update
-"r c" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload emacs config")
-"e c" 'kcr/run-compiler-on-line
-"e l" 'kcr/other-buff-to-split
+"r p" #'kcr/pkg-update
+"r c" #'((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload emacs config")
+"e c" #'kcr/run-compiler-on-line
+"e l" #'kcr/other-buff-to-split
 "e o" 'org-latex-export-to-pdf
 "e p" 'print-buffer
 "f q" 'delete-frame
