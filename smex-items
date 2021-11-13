@@ -1,24 +1,24 @@
 
 ;; ----- smex-history -----
 (
- eval-region
+ nroff-mode
+ roff-mode
  eval-buffer
- debug
- electric-pair-local-mode
- lisp-eval-defun
- ucs-insert
- ispell
+ kcr/elisp-edit
+ kill-buffer
+ package-install
+ print-buffer
 )
 
 ;; ----- smex-data -----
 (
- (eww . 1)
+ (eww . 2)
  (gnus . 1)
- (eval-buffer . 21)
+ (eval-buffer . 22)
  (bookmark-menu . 1)
  (bookmark-set . 1)
  (dashboard-return . 3)
- (calc . 1)
+ (calc . 2)
  (eaf-open-demo . 1)
  (eaf-open-camera . 1)
  (eaf-open-browser . 1)
@@ -33,12 +33,12 @@
  (server-edit . 1)
  (lsp-install-server . 1)
  (ispell . 4)
- (print-buffer . 2)
+ (print-buffer . 3)
  (org-latex-export-to-pdf . 2)
  (ucs-insert . 7)
  (cua-paste . 1)
  (evil-paste-from-register . 2)
- (org-mode . 1)
+ (org-mode . 2)
  (undo . 1)
  (list-packages . 2)
  (find-grep . 1)
@@ -47,15 +47,33 @@
  (load-file . 3)
  (yow . 4)
  (magit-clone . 1)
- (kcr/elisp-edit . 3)
+ (kcr/elisp-edit . 5)
  (bury-buffer . 3)
  (maximize-window . 2)
  (toggle-frame-fullscreen . 2)
- (eshell . 1)
+ (eshell . 2)
  (exwm-exit . 1)
- (eval-region . 8)
+ (eval-region . 10)
  (lisp-eval-defun . 1)
  (electric-pair-local-mode . 1)
- (kcr/wrap-eqn . 7)
+ (kcr/wrap-eqn . 23)
  (debug . 1)
+ (rmail . 1)
+ (LaTeX-mode . 2)
+ (package-delete . 2)
+ (ivy-bibtex . 2)
+ (insert-zippyism . 1)
+ (apropos-zippy . 2)
+ (describe-char . 1)
+ (evil-redo . 1)
+ (undo-redo . 5)
+ (kcr/other-buff-to-split . 1)
+ (dired-toggle-marks . 1)
+ (dired-do-delete . 1)
+ (xwidget-webkit-browse-url . 2)
+ (package-install . 2)
+ (evil-delete-buffer . 1)
+ (kill-buffer . 1)
+ (roff-mode . 1)
+ (nroff-mode . 1)
 )

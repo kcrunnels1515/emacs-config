@@ -478,6 +478,12 @@ With a prefix ARG always prompt for command to use."
 (global-set-key (kbd "C-x a a") #'append-to-buffer)
 (global-set-key (kbd "C-c o") #'kcr/open-with)
 (global-set-key (kbd "C-c C-i") #'kcr/insert-link-to-file)
+; IDO sucks ass
+(define-key (cdr ido-minor-mode-map-entry) [remap write-file] nil)
+(define-key (cdr ido-minor-mode-map-entry) [remap kill-buffer] nil)
+(define-key (cdr ido-minor-mode-map-entry) [remap insert-file] nil)
+(define-key (cdr ido-minor-mode-map-entry) [remap insert-buffer] nil)
+(define-key (cdr ido-minor-mode-map-entry) [remap find-alternative-file] nil)
 
 (nvmap :prefix "SPC"
 "r p" #'kcr/pkg-update

@@ -5,7 +5,7 @@
  'nil)
 (setq url-cookie-secure-storage
  '((".youtube.com"
-  [url-cookie "VISITOR_INFO1_LIVE" "y3pchEPBY3I" "Sun, 24-Oct-2021 13:30:37 GMT" "/" ".youtube.com" t]))
+  [url-cookie "VISITOR_INFO1_LIVE" "MubvuPT6JLQ" "Thu, 05-May-2022 00:31:47 GMT" "/" ".youtube.com" t]))
 )
 
 ;; Local Variables:
