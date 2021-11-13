@@ -1,3 +1,0 @@
-https://www.youtube.com/
-https://vim.fandom.com/wiki/Moving_around
-https://stackoverflow.com/questions/49126414/vim-sentence-motion
