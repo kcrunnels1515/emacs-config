@@ -29,7 +29,6 @@
   - [[#enable-org-block-expansion][Enable Org Block expansion]]
   - [[#auto-create-toc][Auto-create TOC]]
   - [[#org-present][Org present]]
-  - [[#org-roam][Org Roam]]
 - [[#latexpdf-tools][LaTeX/PDF tools]]
 - [[#emms---emacs-multimedia-system][EMMS - Emacs MultiMedia System]]
 - [[#magit][Magit]]
@@ -314,26 +313,6 @@ eshell-rc-script "~/.emacs.d/eshell.rc"
                  (org-remove-inline-images)
                  (org-present-show-cursor)
                  (org-present-read-write)))))
-#+end_src
-
-** Org Roam
-#+begin_src emacs-lisp
-(use-package org-roam
-  :ensure t
-  :custom
-  (org-roam-directory (file-truename "/home/kellyr/dox/org"))
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today))
-  :config
-  (org-roam-db-autosync-mode)
-  ;; If using org-roam-protocol
-  (require 'org-roam-protocol))
-  (setq org-roam-v2-ack t)
 #+end_src
 
 * LaTeX/PDF tools
